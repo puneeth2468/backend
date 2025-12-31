@@ -1,25 +1,25 @@
-# Use Java 17
 FROM eclipse-temurin:17-jdk
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
+# Copy maven wrapper
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+# Give execute permission
+RUN chmod +x mvnw
+
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy source code
+# Copy source
 COPY src src
 
-# Build the application
+# Build application
 RUN ./mvnw clean package -DskipTests
 
-# Expose port
 EXPOSE 10000
 
-# Run the app
 CMD ["java", "-jar", "target/*.jar"]
+
