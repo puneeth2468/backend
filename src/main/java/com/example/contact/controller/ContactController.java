@@ -1,22 +1,18 @@
-package com.example.contact.controller;
-
-import com.example.contact.model.Contact;
-import com.example.contact.service.ContactService;
-import org.springframework.web.bind.annotation.*;
-
-@CrossOrigin(origins = "https://frontend-pzu9.onrender.com")
 @RestController
 @RequestMapping("/api/contact")
+@CrossOrigin(origins = "https://frontend-pzu9.onrender.com")
 public class ContactController {
 
-    private final ContactService service;
+    @Autowired
+    private ContactRepository contactRepository;
 
-    public ContactController(ContactService service) {
-        this.service = service;
+    @PostMapping
+    public Contact saveContact(@RequestBody Contact contact) {
+        return contactRepository.save(contact);
     }
 
-    @PostMapping("/contact")
-    public Contact saveContact(@RequestBody Contact contact) {
-        return service.save(contact);
+    @GetMapping
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
     }
 }
